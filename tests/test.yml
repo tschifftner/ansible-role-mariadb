@@ -1,7 +1,6 @@
 ---
-- hosts: all
+- hosts: localhost
   remote_user: root
-  sudo: true
 
   vars:
     mariadb_admin_user: 'admin'
