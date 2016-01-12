@@ -1,0 +1,46 @@
+---
+- name: Main configuration
+  template:
+    src: my.cnf
+    dest: "{{ mariadb_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+    force: "{{ mariadb_overwrite_global_mycnf }}"
+  notify: restart mysql
+
+- name: Ensure additional configuration folder exists
+  file:
+    path: "{{ mariadb_config_include_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: mariadb_config_include_files | length
+
+- name: Copy additional configurations
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ mariadb_config_include_dir }}/{{ item.src | basename }}"
+    owner: root
+    group: root
+    mode: 0644
+    force: "{{ item.force | default(false) }}"
+  with_items: mariadb_config_include_files
+  notify: restart mysql
+
+- name: Enable slow query log
+  file:
+    path: "{{ mariadb_slow_query_log_file }}"
+    state: touch
+    owner: mysql
+    group: mysql
+    mode: 0644
+  when: mariadb_slow_query_log_enabled
+
+- name: Set startup settings and start mariadb
+  service:
+    name: mysql
+    state: started
+    enabled: "{{ mariadb_enabled_on_startup | default(yes) }}"
+#  register: mariadb_service_configuration

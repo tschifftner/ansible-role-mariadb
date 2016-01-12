@@ -1,0 +1,10 @@
+---
+- name: Manage mariadb databases
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: present
+    login_user: '{{ _mariadb_login_user }}'
+    login_password: '{{ _mariadb_login_password }}'
+  with_items: mariadb_databases

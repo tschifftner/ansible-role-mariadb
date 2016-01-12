@@ -1,0 +1,98 @@
+---
+mariadb_admin_home: '/root'
+mariadb_admin_user: 'admin'
+mariadb_admin_password: 'ReplaceWithStrongPassword-r$sdD4S2mG0Xm'
+mariadb_admin_hosts:
+  - 127.0.0.1
+  - ::1
+  - localhost
+
+mariadb_allowed_hosts:
+  - 127.0.0.1
+  - ::1
+  - localhost
+
+mariadb_admin_force_password_update: false
+
+# Overwrite global my.cnf on every ansible run
+mariadb_overwrite_global_mycnf: 'yes'
+
+mariadb_config_include_files: []
+#  - src: path/relative/to/playbook/file.cnf
+#  - { src: path/relative/to/playbook/anotherfile.cnf, force: yes }
+
+mariadb_enabled_on_startup: yes
+
+# Databases.
+mariadb_databases: []
+#   - name: example
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     replicate: 1
+
+# Users.
+mariadb_users: []
+#   - name: example
+#     host: 127.0.0.1
+#     password: secret
+#     priv: *.*:USAGE
+
+# Create users with host == localhost also with host == 127.0.0.1
+mariadb_users_create_ip_alias: true
+
+# MySQL connection settings.
+mariadb_port: "3306"
+mariadb_bind_address: '0.0.0.0'
+mariadb_datadir: /var/lib/mysql
+mariadb_pid_file: /var/run/mysqld/mysqld.pid
+
+# Slow query log settings.
+mariadb_slow_query_log_enabled: no
+mariadb_slow_query_log_file: /var/log/mysql-slow.log
+mariadb_slow_query_time: 2
+
+# Memory settings (default values optimized ~512MB RAM).
+mariadb_key_buffer_size: "256M"
+mariadb_max_allowed_packet: "64M"
+mariadb_table_open_cache: "256"
+mariadb_sort_buffer_size: "1M"
+mariadb_read_buffer_size: "1M"
+mariadb_read_rnd_buffer_size: "4M"
+mariadb_myisam_sort_buffer_size: "64M"
+mariadb_thread_cache_size: "8"
+mariadb_query_cache_size: "16M"
+mariadb_max_connections: 151
+
+# Other settings.
+mariadb_wait_timeout: 28800
+
+# Try number of CPU's * 2 for thread_concurrency.
+mariadb_thread_concurrency: 2
+
+# InnoDB settings.
+# Set .._buffer_pool_size up to 80% of RAM but beware of setting too high.
+mariadb_innodb_file_per_table: "1"
+mariadb_innodb_buffer_pool_size: "256M"
+mariadb_innodb_additional_mem_pool_size: "20M"
+# Set .._log_file_size to 25% of buffer pool size.
+mariadb_innodb_log_file_size: "64M"
+mariadb_innodb_log_buffer_size: "8M"
+mariadb_innodb_flush_log_at_trx_commit: "1"
+mariadb_innodb_lock_wait_timeout: 50
+
+# mysqldump settings.
+mariadb_mysqldump_max_allowed_packet: "64M"
+
+# Logging settings.
+mariadb_log: ""
+mariadb_log_error: /var/log/mysql.err
+mariadb_syslog_tag: mysql
+
+# Replication settings (replication is only enabled if master/user have values).
+mariadb_server_id: "1"
+mariadb_max_binlog_size: "100M"
+mariadb_expire_logs_days: "10"
+mariadb_replication_role: ''
+mariadb_replication_master: ''
+# Same keys as `mariadb_users` above.
+mariadb_replication_user: []

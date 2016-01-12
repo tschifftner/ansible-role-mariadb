@@ -1,0 +1,21 @@
+---
+mariadb_version: '10.1'
+mariadb_apt_mirror: 'http://mirror.netcologne.de'
+mariadb_apt_repositories:
+  - 'deb [arch=amd64,i386] {{ mariadb_apt_mirror }}/mariadb/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+  - 'deb [arch=amd64,i386] {{ mariadb_apt_mirror }}/mariadb/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+  - 'deb-src {{ mariadb_apt_mirror }}/mariadb/repo/{{ mariadb_version }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main'
+
+mariadb_apt_keyserver: 'keyserver.ubuntu.com'
+mariadb_apt_keyid: '0xcbcb082a1bb943db'
+
+#mariadb_apt_packages:
+#  - software-properties-common
+#  - mariadb-server
+#  - mariadb-client
+#  - python-mysqldb
+
+mariadb_default_hosts:
+  - localhost
+  - 127.0.0.1
+  - ::1

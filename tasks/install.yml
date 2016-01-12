@@ -1,0 +1,64 @@
+---
+- debug: msg="Install MariaDB"
+
+- name: Purge all mysql packages
+  apt:
+    pkg: 'mysql*'
+    state: absent
+    purge: true
+  when: mariadb_not_installed
+  with_items:
+    - 'mysql*'
+    - 'mysql'
+
+- name: Install mariadb keys
+  apt_key:
+    keyserver: "{{ mariadb_apt_keyserver }}"
+    id: "{{ mariadb_apt_keyid }}"
+    state: present
+
+- name: Install mariadb apt repositories
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  register: mariadb_install_packages
+  with_items: mariadb_apt_repositories
+
+- name: Install mariadb apt dependencies
+  apt:
+    pkg: '{{ item }}'
+    state: present
+    force: yes
+  with_items: mariadb_apt_dependencies
+
+# Run when _NOT_ Ubuntu 12
+- name: Install mariadb apt dependencies
+  apt:
+    pkg: '{{ item }}'
+    state: build-dep
+    force: yes
+  with_items: mariadb_apt_packages
+  changed_when: false
+  when: (ansible_distribution == 'Ubuntu' and ansible_distribution_version|int < 14) == false
+
+- name: Install mariadb server apt packages
+  apt:
+    pkg: '{{ item }}'
+    state: present
+    force: yes
+  with_items: mariadb_apt_packages
+
+# Stop automatically started mariadb on first run and delete ib_logfile
+# in case a custom log file size is defined.
+- name: Stop mariadb after inital installation (for cleanup)
+  when: mariadb_not_installed
+  service:
+    name: mysql
+    state: stopped
+
+- name: Delete default innodb log files
+  when: mariadb_not_installed
+  file:
+    path: '{{ mariadb_datadir }}/ib_logfile[01]'
+    state: absent

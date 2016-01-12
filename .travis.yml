@@ -1,0 +1,72 @@
+---
+language: python
+python: "2.7"
+
+# Use the new container infrastructure
+sudo: false
+
+env:
+  - SITE=test.yml ANSIBLE_VERSION=1.8
+  - SITE=test.yml ANSIBLE_VERSION=1.9.4
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python-pip
+
+install:
+  # Install Ansible.
+  - pip install ansible==$ANSIBLE_VERSION
+
+  # Add ansible.cfg to pick up roles path.
+  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+
+  # Install ansible-lint
+  - pip install ansible-lint
+
+script:
+  # Check the role/playbook's syntax.
+  - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
+
+  # Run the role/playbook with ansible-playbook.
+  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+    ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  # ansible-lint checks for best practice
+  - ansible-lint tests/$SITE
+
+  # Check to make sure we can connect to MySQL via Unix socket.
+  - >
+    mysql -u admin -ptravis -e 'show databases;'
+    | grep -q 'performance_schema'
+    && (echo 'MariaDb running normally' && exit 0)
+    || (echo 'MariaDb not running' && exit 1)
+
+  # Check to make sure we can connect to MySQL via TCP.
+  - >
+    mysql -u admin -ptravis -h 127.0.0.1 -e 'show databases;'
+    | grep -q 'performance_schema'
+    && (echo 'MariaDb running normally' && exit 0)
+    || (echo 'MariaDb not running' && exit 1)
+
+  # Check travis user and database
+  - >
+    mysql -u supertravis -ptravis -e 'show databases;'
+    | grep -q 'travis_testdb'
+    && (echo 'MariaDb running normally' && exit 0)
+    || (echo 'MariaDb not running' && exit 1)
+
+after_failure:
+  - "sudo ls -lah /var/log"
+  - "sudo cat /var/log/mysql/error.log"
+
+notifications:
+  slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
