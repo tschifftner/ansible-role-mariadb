@@ -6,7 +6,7 @@ galaxy_info:
   description: Installs mariadb on Debian/Ubuntu linux servers.
   company: ambimax® GmbH
   license: MIT
-  min_ansible_version: 1.8
+  min_ansible_version: 1.9
   platforms:
   - name: Debian
     versions:
