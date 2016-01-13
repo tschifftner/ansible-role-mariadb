@@ -1,2 +1,10 @@
 ---
-# handlers file for ansible-role-example
+- name: reload mariadb
+  action: service name=mysql state=reloaded
+
+- name: start mariadb
+  action: service name=mysql state=started enabled=yes
+
+- name: restart mariadb
+  action: service name=mysql state=restarted
+
