@@ -3,7 +3,7 @@
   action: service name=mysql state=reloaded
 
 - name: start mysql
-  action: service name=mysql state=started enabled=yes
+  action: service name=mysql state=started enabled=yes sleep=5
 
 - name: restart mysql
-  action: service name=mysql state=restarted
+  action: service name=mysql state=restarted sleep=5

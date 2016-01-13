@@ -22,5 +22,5 @@
     append_privs: "{{ item.append_privs | default('no') }}"
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
-  when: item.host == 'localhost' and mariadb_users_create_ip_alias
+  when: (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
   with_items: mariadb_users

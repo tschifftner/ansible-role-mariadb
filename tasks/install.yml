@@ -56,6 +56,7 @@
   service:
     name: mysql
     state: stopped
+    sleep: 5
 
 - name: Delete default innodb log files
   when: mariadb_not_installed

@@ -43,4 +43,5 @@
     name: mysql
     state: started
     enabled: "{{ mariadb_enabled_on_startup | default(yes) }}"
+    sleep: 5
 #  register: mariadb_service_configuration
