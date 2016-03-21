@@ -23,14 +23,14 @@
     state: present
     update_cache: yes
   register: mariadb_install_packages
-  with_items: mariadb_apt_repositories
+  with_items: '{{mariadb_apt_repositories}}'
 
 - name: Install mariadb apt dependencies
   apt:
     pkg: '{{ item }}'
     state: present
     force: yes
-  with_items: mariadb_apt_dependencies
+  with_items: '{{mariadb_apt_dependencies}}'
 
 # Run when _NOT_ Ubuntu 12
 - name: Install mariadb apt dependencies
@@ -38,7 +38,7 @@
     pkg: '{{ item }}'
     state: build-dep
     force: yes
-  with_items: mariadb_apt_packages
+  with_items: '{{mariadb_apt_packages}}'
   changed_when: false
   when: (ansible_distribution == 'Ubuntu' and ansible_distribution_version|int < 14) == false
 
@@ -47,7 +47,7 @@
     pkg: '{{ item }}'
     state: present
     force: yes
-  with_items: mariadb_apt_packages
+  with_items: '{{mariadb_apt_packages}}'
 
 # Stop automatically started mariadb on first run and delete ib_logfile
 # in case a custom log file size is defined.
