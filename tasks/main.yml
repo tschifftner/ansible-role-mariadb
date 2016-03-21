@@ -49,7 +49,7 @@
   tags: ['mariadb-users']
 
 #- include: replication.yml
-  tags: ['mariadb-replication']
+#  tags: ['mariadb-replication']
 
 - include: import.yml
   tags: ['mariadb-import']
