@@ -9,4 +9,4 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  with_items: mariadb_databases
+  with_items: '{{ mariadb_databases }}'

@@ -8,14 +8,14 @@
     validate_certs: "{{ item.validate_certs | default(omit) }}"
     mode: '0755'
   when: item.url is defined and item.wget is not defined
-  with_items: mariadb_download_files
+  with_items: '{{ mariadb_download_files }}'
 
 - name: Get import files (wget)
   shell: '{{ item.wget }}'
   args:
     creates: '{{ item.dest }}'
   when: item.wget is defined and item.wget != false
-  with_items: mariadb_download_files
+  with_items: '{{ mariadb_download_files }}'
 
 #- debug:
 #    msg: "{{ item.0.database }} == {{ item.1.db }} and ( {{ item.1.changed }} or {{ (item.0.force is defined and item.0.force) }})"
@@ -30,5 +30,5 @@
     target: '{{ item.0.src }}'
   when: item.0.database == item.1.db and (item.1.changed or (item.0.force is defined and item.0.force))
   with_nested:
-      - mariadb_import_files
-      - _mariadb_databases.results
+      - '{{ mariadb_import_files }}'
+      - '{{ _mariadb_databases.results }}'

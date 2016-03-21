@@ -15,7 +15,7 @@
 - name: Delete all users not in allowed hosts
   shell: mysql {{ _mariadb_cmd_login }} -NBe 'DELETE FROM mysql.user WHERE host = "{{ item }}"'
   when: mariadb_install_packages | bool and item not in mariadb_allowed_hosts
-  with_items: mysql_hosts.stdout_lines
+  with_items: '{{ mysql_hosts.stdout_lines }}'
 
 - name: Remove anonymous user
   mysql_user:
@@ -25,7 +25,7 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  with_items: mysql_hosts.stdout_lines
+  with_items: '{{ mysql_hosts.stdout_lines }}'
 
 - name: Add administrative user
   mysql_user:
@@ -38,7 +38,7 @@
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
   when: mariadb_admin_user != 'root'
-  with_items: mariadb_admin_hosts
+  with_items: '{{ mariadb_admin_hosts }}'
 
 - name: Copy .my.cnf file with credentials for administrative user
   template:
@@ -71,5 +71,5 @@
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
   when: mariadb_admin_user != 'root'
-  with_items: mysql_hosts.stdout_lines
+  with_items: '{{ mysql_hosts.stdout_lines }}'
 
