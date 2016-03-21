@@ -1,0 +1,36 @@
+---
+- name: Get import files
+  get_url:
+    url: '{{ item.url }}'
+    url_username: '{{ item.username | default(omit) }}'
+    url_password: '{{ item.password | default(omit) }}'
+    dest: "{{ item.dest }}"
+    validate_certs: "{{ item.validate_certs | default(omit) }}"
+    mode: '0755'
+  when: item.url is defined and item.wget is not defined
+  with_items: mariadb_download_files
+
+- name: Get import files (wget)
+  shell: '{{ item.wget }}'
+  args:
+    creates: '{{ item.dest }}'
+  when: item.wget is defined and item.wget != false
+  with_items: mariadb_download_files
+
+#- debug:
+#    msg: "{{ item.0.database }} == {{ item.1.db }} and ( {{ item.1.changed }} or {{ (item.0.force is defined and item.0.force) }})"
+#  with_nested:
+#    - mariadb_import_files
+#    - _mariadb_databases.results
+
+- name: Import files
+  mysql_db:
+    state: import
+    name: '{{ item.0.database }}'
+    target: '{{ item.0.src }}'
+  when: item.0.database == item.1.db and (item.1.changed or (item.0.force is defined and item.0.force))
+  async: 300
+  poll: 5
+  with_nested:
+      - mariadb_import_files
+      - _mariadb_databases.results

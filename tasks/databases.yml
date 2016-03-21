@@ -1,5 +1,6 @@
 ---
 - name: Manage mariadb databases
+  register: _mariadb_databases
   mysql_db:
     name: "{{ item.name }}"
     collation: "{{ item.collation | default('utf8_general_ci') }}"
@@ -7,4 +8,5 @@
     state: present
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
+  no_log: true
   with_items: mariadb_databases

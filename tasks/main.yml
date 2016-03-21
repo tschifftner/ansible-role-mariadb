@@ -26,16 +26,30 @@
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
   when: mycnf_file.stat is defined and mycnf_file.stat.exists
 
-- debug:
-    var: mariadb_installed
-- debug:
-    var: mariadb_not_installed
-- debug:
-    var: mycnf_file
-
+#- debug:
+#    var: mariadb_installed
+#- debug:
+#    var: mariadb_not_installed
+#- debug:
+#    var: mycnf_file
+#
 - include: install.yml
+  tags: ['mariadb-install']
+
 - include: configure.yml
+  tags: ['mariadb-configure']
+
 - include: secure-installation.yml
+  tags: ['mariadb-secure-installation']
+
 - include: databases.yml
+  tags: ['mariadb-databases']
+
 - include: users.yml
+  tags: ['mariadb-users']
+
 #- include: replication.yml
+  tags: ['mariadb-replication']
+
+- include: import.yml
+  tags: ['mariadb-import']

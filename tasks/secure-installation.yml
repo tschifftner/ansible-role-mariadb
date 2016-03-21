@@ -5,6 +5,7 @@
     state: absent
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
+  no_log: true
 
 - name: Fetch all hosts
   command: mysql {{ _mariadb_cmd_login }} -NBe "SELECT Host FROM mysql.user ORDER BY (Host='localhost') ASC"
@@ -23,6 +24,7 @@
     state: absent
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
+  no_log: true
   with_items: mysql_hosts.stdout_lines
 
 - name: Add administrative user
@@ -34,6 +36,7 @@
     state: present
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
+  no_log: true
   when: mariadb_admin_user != 'root'
   with_items: mariadb_admin_hosts
 
@@ -43,7 +46,7 @@
     dest: "/root/.my.cnf"
     owner: root
     group: root
-    mode: 0600
+    mode: '0600'
 
 - set_fact:
     _mariadb_login_user: "{{ mariadb_admin_user }}"
@@ -66,6 +69,7 @@
     state: absent
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
+  no_log: true
   when: mariadb_admin_user != 'root'
   with_items: mysql_hosts.stdout_lines
 

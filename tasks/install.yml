@@ -3,7 +3,7 @@
 
 - name: Purge all mysql packages
   apt:
-    pkg: 'mysql*'
+    pkg: '{{ item }}'
     state: absent
     purge: true
   when: mariadb_not_installed
