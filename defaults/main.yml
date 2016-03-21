@@ -44,6 +44,9 @@ mariadb_users: []
 # Create users with host == localhost also with host == 127.0.0.1
 mariadb_users_create_ip_alias: true
 
+mariadb_download_files: []
+mariadb_import_files: []
+
 # MySQL connection settings.
 mariadb_port: "3306"
 mariadb_bind_address: '0.0.0.0'

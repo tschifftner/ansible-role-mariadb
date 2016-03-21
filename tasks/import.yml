@@ -29,8 +29,6 @@
     name: '{{ item.0.database }}'
     target: '{{ item.0.src }}'
   when: item.0.database == item.1.db and (item.1.changed or (item.0.force is defined and item.0.force))
-  async: 300
-  poll: 5
   with_nested:
       - mariadb_import_files
       - _mariadb_databases.results

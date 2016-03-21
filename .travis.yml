@@ -5,6 +5,8 @@ python: "2.7"
 env:
   - SITE=test.yml ANSIBLE_VERSION=1.9.4
 
+  - SITE=test.yml ANSIBLE_VERSION=2.0.1.0
+
 # Install ansible
 addons:
   apt:
