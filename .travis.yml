@@ -16,14 +16,12 @@ env:
   - SITE=test.yml ANSIBLE_VERSION=1.9.2
   - SITE=test.yml ANSIBLE_VERSION=1.9.1
   - SITE=test.yml ANSIBLE_VERSION=1.9.0.1
-  - SITE=test.yml ANSIBLE_VERSION=1.8.4
-  - SITE=test.yml ANSIBLE_VERSION=1.8.3
-  - SITE=test.yml ANSIBLE_VERSION=1.8.2
-  - SITE=test.yml ANSIBLE_VERSION=1.8.1
-  - SITE=test.yml ANSIBLE_VERSION=1.8
-  - SITE=test.yml ANSIBLE_VERSION=1.7.2
-  - SITE=test.yml ANSIBLE_VERSION=1.7.1
-  - SITE=test.yml ANSIBLE_VERSION=1.7
+
+matrix:
+  allow_failures:
+    - env: SITE=test.yml ANSIBLE_VERSION=2.0.0.2
+    - env: SITE=test.yml ANSIBLE_VERSION=2.0.0.1
+    - env: SITE=test.yml ANSIBLE_VERSION=2.0.0.0
 
 branches:
   only:
