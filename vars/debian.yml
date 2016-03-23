@@ -10,3 +10,7 @@ mariadb_apt_dependencies:
 mariadb_apt_packages:
   - "mariadb-server-{{ mariadb_version }}"
   - "mariadb-client-{{ mariadb_version }}"
+
+mariadb_apt_tools_packages:
+  - mysqltuner
+  - percona-toolkit

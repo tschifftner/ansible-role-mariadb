@@ -18,6 +18,8 @@ mariadb_allowed_hosts:
 
 mariadb_admin_force_password_update: false
 
+mariadb_pin_repository: true
+
 # Overwrite global my.cnf on every ansible run
 mariadb_overwrite_global_mycnf: 'yes'
 
@@ -43,6 +45,8 @@ mariadb_users: []
 
 # Create users with host == localhost also with host == 127.0.0.1
 mariadb_users_create_ip_alias: true
+
+mariadb_install_tools: false
 
 mariadb_download_files: []
 mariadb_import_files: []

@@ -17,6 +17,12 @@
     id: "{{ mariadb_apt_keyid }}"
     state: present
 
+- name: Pin mariadb apt repository
+  template:
+    src: 'mariadb.pref'
+    dest: /etc/apt/preferences.d/mariadb.pref
+  when: mariadb_pin_repository
+
 - name: Install mariadb apt repositories
   apt_repository:
     repo: "{{ item }}"
@@ -48,6 +54,13 @@
     state: present
     force: yes
   with_items: '{{mariadb_apt_packages}}'
+
+- name: Install mariadb tools
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{mariadb_apt_tools_packages}}'
+  when: mariadb_install_tools
 
 # Stop automatically started mariadb on first run and delete ib_logfile
 # in case a custom log file size is defined.
