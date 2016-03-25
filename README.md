@@ -1,6 +1,6 @@
 # Ansible Role: MariaDB
 
-[![Build Status](https://travis-ci.org/tschifftner/ansible-role-mariadb.svg)](https://travis-ci.org/tschifftner/ansible-role-mariadb)
+[![Build Status](https://travis-ci.org/tschifftner/ansible-role-mariadb.svg?branch=master)](https://travis-ci.org/tschifftner/ansible-role-mariadb)
 
 Installs MariaDB on Debian/Ubuntu linux servers.
 
