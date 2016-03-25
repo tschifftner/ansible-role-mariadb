@@ -12,6 +12,65 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+### Create database users
+
+```
+mariadb_users:
+  - name: 'user1'
+    password: '*******'
+    priv: '*.*:USAGE'
+    hosts:
+      - localhost
+      - 127.0.0.1
+
+  - name: 'normaltravis'
+    password: '*******'
+    priv: '*.*:ALL,GRANT'
+    hosts:
+      - localhost
+      - 127.0.0.1
+      
+  - name: 'old'
+    state: absent
+    hosts:
+      - localhost
+      - 127.0.0.1
+```
+
+### Create databases
+
+All databases need to be defined in ```mariadb_databases```:
+
+```
+mariadb_databases:
+  - name: 'testdb'
+    collation: utf8_general_ci
+    encoding: utf8
+```
+
+### Settings user priviledges on databases and tables
+
+To define user priviledges use the following format:
+```
+db.table:priv1,priv2
+```
+
+Idempotent solution for multiple priviledges (@see http://stackoverflow.com/a/22959760)
+
+```
+mysql_privileges:
+  - db1.*:ALL,GRANT
+  - db2.*:USAGE
+  
+mariadb_users:  
+  - name: 'user1'
+    password: 'travis'
+    priv={{ mysql_privileges|join('/') }}
+    hosts:
+      - localhost
+      - 127.0.0.1
+```
+
 ### Security
 
 This role sets an administrative user and removes root entirely. Please define the following settings:
