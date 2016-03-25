@@ -30,13 +30,13 @@
 - name: Add administrative user
   mysql_user:
     user: '{{ mariadb_admin_user }}'
-    password: '{{ mariadb_admin_password }}'
+    password: '{{ mariadb_admin_password | default(omit) }}'
     host: '{{ item }}'
     priv: '*.*:ALL,GRANT'
     state: present
     check_implicit_admin: true
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password if _mariadb_login_password != '' else omit }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: true
   with_items: '{{ mariadb_admin_hosts }}'
 
@@ -50,9 +50,13 @@
 
 - set_fact:
     _mariadb_login_user: "{{ mariadb_admin_user }}"
-    _mariadb_login_password: "{{ mariadb_admin_password }}"
+    _mariadb_login_password: "{{ mariadb_admin_password | default(omit) }}"
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
   when: mariadb_admin_user != 'root'
+
+- set_fact:
+    _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
+  when: mariadb_admin_password == ''
 
 - name: Remove root user completely
   mysql_user:
@@ -60,7 +64,7 @@
     host: '{{ item }}'
     state: absent
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: true
   when: mariadb_admin_user != 'root'
   with_items: '{{ mysql_hosts.stdout_lines }}'
