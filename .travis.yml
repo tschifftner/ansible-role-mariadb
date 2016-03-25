@@ -17,10 +17,10 @@ env:
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.1
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.0.1
 
-  - SITE=test-admin-with-password.yml     MYSQL_USER=admin  MYSQL_PASSWORD=travis   ANSIBLE_VERSION=latest
-  - SITE=test-admin-without-password.yml  MYSQL_USER=admin  MYSQL_PASSWORD=''       ANSIBLE_VERSION=latest
-  - SITE=test-root-with-password.yml      MYSQL_USER=root   MYSQL_PASSWORD=travis   ANSIBLE_VERSION=latest
-  - SITE=test-root-without-password.yml   MYSQL_USER=root   MYSQL_PASSWORD=''       ANSIBLE_VERSION=latest
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' ANSIBLE_VERSION=latest
+  - SITE=test-admin-without-password.yml  MYSQL_ROOT_LOGIN='-u admin'          MYSQL_USER_LOGIN='-u supertravis'          ANSIBLE_VERSION=latest
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' ANSIBLE_VERSION=latest
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis'          ANSIBLE_VERSION=latest
 
 matrix:
   allow_failures:
@@ -66,21 +66,21 @@ script:
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
-    mysql -u $MYSQL_USER -p${MYSQL_PASSWORD} -e 'show databases;'
+    mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check to make sure we can connect to MySQL via TCP.
   - >
-    mysql -u $MYSQL_USER -p${MYSQL_PASSWORD} -h 127.0.0.1 -e 'show databases;'
+    mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check travis user and database
   - >
-    mysql -u supertravis -p${MYSQL_PASSWORD} -e 'show databases;'
+    mysql ${MYSQL_USER_LOGIN} -e 'show databases;'
     | grep -q 'travis_testdb'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
@@ -89,6 +89,10 @@ after_failure:
   - ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
   - "sudo ls -lah /var/log"
   - "sudo cat /var/log/mysql/error.log"
+  - sudo service mysql status
+  - mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
+  - mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
+  - mysql ${MYSQL_USER_LOGIN} -e 'show databases;'
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
