@@ -27,6 +27,7 @@
     mode: 0644
     force: "{{ item.force | default(false) }}"
   with_items: '{{ mariadb_config_include_files }}'
+  when: mariadb_config_include_files|length
   notify: restart mysql
 
 - name: Enable slow query log

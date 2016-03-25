@@ -10,3 +10,4 @@
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
   with_items: '{{ mariadb_databases }}'
+  when: mariadb_databases|length

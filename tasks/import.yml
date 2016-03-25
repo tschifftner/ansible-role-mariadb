@@ -7,14 +7,14 @@
     dest: "{{ item.dest }}"
     validate_certs: "{{ item.validate_certs | default(omit) }}"
     mode: '0755'
-  when: item.url is defined and item.wget is not defined
+  when: mariadb_download_files|length and item.url is defined and item.wget is not defined
   with_items: '{{ mariadb_download_files }}'
 
 - name: Get import files (wget)
   shell: '{{ item.wget }}'
   args:
     creates: '{{ item.dest }}'
-  when: item.wget is defined and item.wget != false
+  when: mariadb_download_files|length and item.wget is defined and item.wget != false
   with_items: '{{ mariadb_download_files }}'
 
 #- debug:

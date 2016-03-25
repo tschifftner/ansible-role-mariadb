@@ -10,7 +10,7 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  when: item.state is not defined or item.state != 'absent'
+  when: mariadb_users|length and item.state is not defined or item.state != 'absent'
   with_items: '{{ mariadb_users }}'
 
 # For all localhost users create 127.0.0.1 alias
@@ -25,7 +25,7 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  when: (item.state is not defined or item.state != 'absent') and (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
+  when: mariadb_users|length and (item.state is not defined or item.state != 'absent') and (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
   with_items: '{{ mariadb_users }}'
 
 - name: Remove mariadb users
@@ -36,7 +36,7 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  when: item.state is defined and item.state == 'absent'
+  when: mariadb_users|length and item.state is defined and item.state == 'absent'
   with_items: '{{ mariadb_users }}'
 
 # For all localhost users create 127.0.0.1 alias
@@ -48,5 +48,5 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
-  when: (item.state is defined and item.state == 'absent') and (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
+  when: mariadb_users|length and (item.state is defined and item.state == 'absent') and (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
   with_items: '{{ mariadb_users }}'

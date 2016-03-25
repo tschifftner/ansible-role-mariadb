@@ -6,25 +6,27 @@ language: python
 python: "2.7"
 
 env:
-  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=latest
+#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=latest
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.1.0
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.2
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.1
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.0
-  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.4
+#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.4
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.3
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.2
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.1
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.0.1
 
-  - SITE=test-root.yml MYSQL_USER=root ANSIBLE_VERSION=latest
-  - SITE=test-root.yml MYSQL_USER=root ANSIBLE_VERSION=1.9.4
+  - SITE=test-admin-with-password.yml     MYSQL_USER=admin  MYSQL_PASSWORD=travis   ANSIBLE_VERSION=latest
+  - SITE=test-admin-without-password.yml  MYSQL_USER=admin  MYSQL_PASSWORD=''       ANSIBLE_VERSION=latest
+  - SITE=test-root-with-password.yml      MYSQL_USER=root   MYSQL_PASSWORD=travis   ANSIBLE_VERSION=latest
+  - SITE=test-root-without-password.yml   MYSQL_USER=root   MYSQL_PASSWORD=''       ANSIBLE_VERSION=latest
 
 matrix:
   allow_failures:
-    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.2
-    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.1
-    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.0
+#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.2
+#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.1
+#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.0
 
 branches:
   only:
@@ -64,21 +66,21 @@ script:
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
-    mysql -u $MYSQL_USER -ptravis -e 'show databases;'
+    mysql -u $MYSQL_USER -p${MYSQL_PASSWORD} -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check to make sure we can connect to MySQL via TCP.
   - >
-    mysql -u $MYSQL_USER -ptravis -h 127.0.0.1 -e 'show databases;'
+    mysql -u $MYSQL_USER -p${MYSQL_PASSWORD} -h 127.0.0.1 -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check travis user and database
   - >
-    mysql -u supertravis -ptravis -e 'show databases;'
+    mysql -u supertravis -p${MYSQL_PASSWORD} -e 'show databases;'
     | grep -q 'travis_testdb'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
