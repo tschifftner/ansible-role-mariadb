@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: 0755
-  when: mariadb_config_include_files | length
+  when: mariadb_config_include_files|length
 
 - name: Copy additional configurations
   template:
