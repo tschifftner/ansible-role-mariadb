@@ -36,7 +36,7 @@
     state: present
     check_implicit_admin: true
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password if _mariadb_login_password != '' else omit }}'
   no_log: true
   with_items: '{{ mariadb_admin_hosts }}'
 
