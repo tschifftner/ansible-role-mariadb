@@ -17,6 +17,8 @@ env:
   - SITE=test.yml ANSIBLE_VERSION=1.9.1
   - SITE=test.yml ANSIBLE_VERSION=1.9.0.1
 
+  - SITE=test-root.yml ANSIBLE_VERSION=latest
+
 matrix:
   allow_failures:
     - env: SITE=test.yml ANSIBLE_VERSION=2.0.0.2
@@ -26,6 +28,7 @@ matrix:
 branches:
   only:
     - master
+    - dev
 
 before_install:
   - sudo apt-get update -qq

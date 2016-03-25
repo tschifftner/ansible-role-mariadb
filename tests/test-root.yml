@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  vars:
+    mariadb_admin_user: 'root'
+    mariadb_admin_password: 'travis'
+
+    mariadb_users:
+      - name: 'supertravis'
+        hosts:
+          - localhost
+          - 127.0.0.1
+        password: 'travis'
+        priv: '*.*:ALL'
+
+    mariadb_databases:
+      - name: 'travis_testdb'
+        collation: utf8_general_ci
+        encoding: utf8
+
+  roles:
+    - ansible-role-mariadb
