@@ -7,6 +7,8 @@
     login_password: '{{ _mariadb_login_password }}'
   no_log: true
 
+- debug: msg="mysql {{ _mariadb_cmd_login }} -NBe \"SELECT Host FROM mysql.user ORDER BY (Host='localhost') ASC\""
+
 - name: Fetch all hosts
   command: mysql {{ _mariadb_cmd_login }} -NBe "SELECT Host FROM mysql.user ORDER BY (Host='localhost') ASC"
   register: mysql_hosts

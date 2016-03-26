@@ -17,7 +17,7 @@
     mariadb_not_installed: "{{ 'true' if mariadb_installed.stdout == '' else 'false' }}"
     _mariadb_login_user: "root"
     _mariadb_login_password: ""
-    _mariadb_cmd_login: ''
+    _mariadb_cmd_login: '-u root'
 
 # If root user has been removed, use new credentials
 - set_fact:

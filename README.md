@@ -105,7 +105,7 @@ Ansible          | Debian Jessie    | Ubuntu 14.04    | Ubuntu 12.04
 [If you cannot login anymore you can reset your credentials.](https://falseisnotnull.wordpress.com/2012/10/31/did-you-lose-your-mariadb-root-password-gnulinux/)
 
 ## Remove User
-To remove a user define state = absent
+To remove a user define ```state: absent```
 ```
 mariadb_users:
    - name: 'test'
