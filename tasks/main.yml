@@ -27,18 +27,10 @@
   when: mycnf_file.stat is defined and mycnf_file.stat.exists
 
 - set_fact:
-    _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
+    _mariadb_cmd_login: '-u "{{ _mariadb_login_user }}"'
   when: mariadb_not_installed == false and mariadb_admin_password is not defined or mariadb_admin_password == ''
 
-- debug: msg="-u {{_mariadb_login_user}} -p {{_mariadb_login_password}} -cmd {{_mariadb_cmd_login}}"
 
-#- debug:
-#    var: mariadb_installed
-#- debug:
-#    var: mariadb_not_installed
-#- debug:
-#    var: mycnf_file
-#
 - include: install.yml
   tags: ['mariadb-install']
 

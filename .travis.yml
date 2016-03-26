@@ -6,27 +6,58 @@ language: python
 python: "2.7"
 
 env:
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=latest
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.1.0
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.2
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.1
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.0
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.4
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.3
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.2
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.1
-#  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.0.1
-
+  # admin with password
   - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.1.0
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.4
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.3
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.2
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.1
+  - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.0.1
+
+  # admin without password (not supported by ansible yet, therefore only one test)
   - SITE=test-admin-without-password.yml  MYSQL_ROOT_LOGIN='-u admin'          MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+
+  # root with password
   - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.1.0
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.4
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.3
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.2
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.1
+  - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.0.1
+
+  # root without password
   - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.1.0
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.4
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.3
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.2
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.1
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=1.9.0.1
 
 matrix:
   allow_failures:
-#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.2
-#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.1
-#    - env: SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=2.0.0.0
+    - SITE=test-admin-without-password.yml  MYSQL_ROOT_LOGIN='-u admin'          MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+    - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+    - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+    - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
+    - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.1.0
+    - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+    - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+    - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
+    - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.2
+    - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.1
+    - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=2.0.0.0
 
 branches:
   only:
@@ -81,6 +112,13 @@ script:
   # Check travis user and database
   - >
     mysql ${MYSQL_USER_LOGIN} -e 'show databases;'
+    | grep -q 'travis_testdb'
+    && (echo 'MariaDb running normally' && exit 0)
+    || (echo 'MariaDb not running' && exit 1)
+
+  # Check normal travis user and database
+  - >
+    mysql ${MYSQL_USER2_LOGIN} -e 'show databases;'
     | grep -q 'travis_testdb'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)

@@ -7,8 +7,6 @@
     login_password: '{{ _mariadb_login_password }}'
   no_log: mariadb_debug == false
 
-- debug: msg="mysql {{ _mariadb_cmd_login }} -NBe \"SELECT Host FROM mysql.user ORDER BY (Host='localhost') ASC\""
-
 - name: Fetch all hosts
   command: mysql {{ _mariadb_cmd_login }} -NBe "SELECT Host FROM mysql.user ORDER BY (Host='localhost') ASC"
   register: mysql_hosts
@@ -54,13 +52,10 @@
     _mariadb_login_user: "{{ mariadb_admin_user }}"
     _mariadb_login_password: "{{ mariadb_admin_password | default(omit) }}"
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
-  #when: mariadb_admin_user != 'root'
 
 - set_fact:
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
   when: mariadb_admin_password == ''
-
-- debug: msg="-u {{_mariadb_login_user}} -p {{_mariadb_login_password}} -cmd {{_mariadb_cmd_login}}"
 
 - name: Remove root user completely
   mysql_user:

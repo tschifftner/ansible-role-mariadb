@@ -1,6 +1,4 @@
 ---
-- debug: msg="Install MariaDB"
-
 - name: Purge all mysql packages
   apt:
     pkg: '{{ item }}'
