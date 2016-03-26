@@ -2,6 +2,8 @@
 mariadb_admin_home: '/root'
 mariadb_admin_user: 'admin'
 
+mariadb_debug: false
+
 # This password is not secure! Please define your own password!
 mariadb_admin_password:  "{{ ansible_machine_id | hash('sha1') | truncate(24, True, '') }}"
 
