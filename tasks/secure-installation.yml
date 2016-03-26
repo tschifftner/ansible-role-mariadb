@@ -54,7 +54,7 @@
     _mariadb_login_user: "{{ mariadb_admin_user }}"
     _mariadb_login_password: "{{ mariadb_admin_password | default(omit) }}"
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
-  when: mariadb_admin_user != 'root'
+  #when: mariadb_admin_user != 'root'
 
 - set_fact:
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
