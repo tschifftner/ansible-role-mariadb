@@ -38,7 +38,7 @@ env:
 
 matrix:
   allow_failures:
-    - SITE=test-admin-without-password.yml MYSQL_ROOT_LOGIN='-u admin' ANSIBLE_VERSION=latest
+    - env: SITE=test-admin-without-password.yml MYSQL_ROOT_LOGIN='-u admin' ANSIBLE_VERSION=latest
 
 branches:
   only:
