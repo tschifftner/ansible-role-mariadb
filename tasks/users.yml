@@ -8,7 +8,7 @@
     state: "{{ item.state | default('present') }}"
     append_privs: "{{ item.append_privs | default('no') }}"
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
 #  no_log: true
   when: mariadb_users|length and item.state is not defined or item.state != 'absent'
   with_items: '{{ mariadb_users }}'
@@ -23,7 +23,7 @@
     state: "{{ item.state | default('present') }}"
     append_privs: "{{ item.append_privs | default('no') }}"
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
 #  no_log: true
   when: mariadb_users_create_ip_alias and mariadb_users|length and (item.state is not defined or item.state != 'absent') and (item.host is not defined or item.host == 'localhost')
   with_items: '{{ mariadb_users }}'
@@ -34,7 +34,7 @@
     host: "{{ item.host | default('localhost') }}"
     state: absent
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: true
   when: mariadb_users|length and item.state is defined and item.state == 'absent'
   with_items: '{{ mariadb_users }}'
@@ -46,7 +46,7 @@
     host: "127.0.0.1"
     state: absent
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: true
   when: mariadb_users|length and (item.state is defined and item.state == 'absent') and (item.host is not defined or item.host == 'localhost') and mariadb_users_create_ip_alias
   with_items: '{{ mariadb_users }}'

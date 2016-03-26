@@ -7,7 +7,7 @@
     encoding: "{{ item.encoding | default('utf8') }}"
     state: present
     login_user: '{{ _mariadb_login_user }}'
-    login_password: '{{ _mariadb_login_password }}'
+    login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: true
   with_items: '{{ mariadb_databases }}'
   when: mariadb_databases|length

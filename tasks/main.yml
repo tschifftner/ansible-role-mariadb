@@ -28,7 +28,7 @@
 
 - set_fact:
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
-  when: mariadb_admin_password is not defined or mariadb_admin_password == ''
+  when: mariadb_not_installed == false and mariadb_admin_password is not defined or mariadb_admin_password == ''
 
 #- debug:
 #    var: mariadb_installed
