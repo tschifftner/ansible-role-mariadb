@@ -32,7 +32,7 @@
 - name: Add administrative user
   mysql_user:
     user: '{{ mariadb_admin_user }}'
-    password: '{{ mariadb_admin_password | default(omit) }}'
+    password: '{{ mariadb_admin_password }}'
     host: '{{ item }}'
     priv: '*.*:ALL,GRANT'
     state: present
