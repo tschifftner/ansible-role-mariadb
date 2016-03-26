@@ -30,6 +30,8 @@
     _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}"'
   when: mariadb_not_installed == false and mariadb_admin_password is not defined or mariadb_admin_password == ''
 
+- debug: msg="-u {{_mariadb_login_user}} -p {{_mariadb_login_password}} -cmd {{_mariadb_cmd_login}}"
+
 #- debug:
 #    var: mariadb_installed
 #- debug:

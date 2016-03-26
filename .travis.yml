@@ -18,9 +18,9 @@ env:
 #  - SITE=test.yml MYSQL_USER=admin ANSIBLE_VERSION=1.9.0.1
 
   - SITE=test-admin-with-password.yml     MYSQL_ROOT_LOGIN='-u admin -ptravis' MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
-  - SITE=test-admin-without-password.yml  MYSQL_ROOT_LOGIN='-u admin'          MYSQL_USER_LOGIN='-u supertravis'          MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+  - SITE=test-admin-without-password.yml  MYSQL_ROOT_LOGIN='-u admin'          MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
   - SITE=test-root-with-password.yml      MYSQL_ROOT_LOGIN='-u root -ptravis'  MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
-  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis'          MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
+  - SITE=test-root-without-password.yml   MYSQL_ROOT_LOGIN='-u root'           MYSQL_USER_LOGIN='-u supertravis -ptravis' MYSQL_USER2_LOGIN='-u normaltravis -ptravis'  ANSIBLE_VERSION=latest
 
 matrix:
   allow_failures:
