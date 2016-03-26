@@ -14,6 +14,8 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ### Create database users
 
+_Passwords are required!_
+
 ```
 mariadb_users:
   - name: 'user1'
@@ -80,6 +82,8 @@ mariadb_admin_home: '/root'
 mariadb_admin_user: 'admin'
 mariadb_admin_password: 'Set strong password here!'
 ```
+
+_When a custom admin username is used, a password must be set!_
 
 ## Dependencies
 
