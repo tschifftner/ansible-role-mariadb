@@ -16,6 +16,7 @@
     creates: '{{ item.dest }}'
   when: mariadb_download_files|length and item.wget is defined and item.wget != false
   with_items: '{{ mariadb_download_files }}'
+  tags: ['skip_ansible_lint']
 
 #- debug:
 #    msg: "{{ item.0.database }} == {{ item.1.db }} and ( {{ item.1.changed }} or {{ (item.0.force is defined and item.0.force) }})"
