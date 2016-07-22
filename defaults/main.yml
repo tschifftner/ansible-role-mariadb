@@ -32,14 +32,18 @@ mariadb_config_include_files: []
 mariadb_enabled_on_startup: yes
 
 # Databases.
-mariadb_databases: []
+mariadb_default_databases: []
+mariadb_host_databases: []
+mariadb_group_databases: []
 #   - name: example
 #     collation: utf8_general_ci
 #     encoding: utf8
 #     replicate: 1
 
 # Users.
-mariadb_users: []
+mariadb_default_users: []
+mariadb_host_users: []
+mariadb_group_users: []
 #   - name: example
 #     host: 127.0.0.1
 #     password: secret
@@ -105,3 +109,10 @@ mariadb_replication_role: ''
 mariadb_replication_master: ''
 # Same keys as `mariadb_users` above.
 mariadb_replication_user: []
+
+
+#
+# You should never have to overwrite these:
+#
+mariadb_users: '{{ (mariadb_default_users + mariadb_host_users + mariadb_group_users) | unique }}'
+mariadb_databases: '{{ (mariadb_default_databases + mariadb_host_databases + mariadb_group_databases) | unique }}'

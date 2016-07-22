@@ -17,7 +17,7 @@ Available variables are listed below, along with default values (see `defaults/m
 _Passwords are required!_
 
 ```
-mariadb_users:
+mariadb_group_users:
   - name: 'user1'
     password: '*******'
     priv: '*.*:USAGE'
@@ -44,7 +44,7 @@ mariadb_users:
 All databases need to be defined in ```mariadb_databases```:
 
 ```
-mariadb_databases:
+mariadb_host_databases:
   - name: 'testdb'
     collation: utf8_general_ci
     encoding: utf8
@@ -64,13 +64,24 @@ mysql_privileges:
   - db1.*:ALL,GRANT
   - db2.*:USAGE
   
-mariadb_users:  
+mariadb_host_users:  
   - name: 'user1'
     password: 'travis'
     priv={{ mysql_privileges|join('/') }}
     hosts:
       - localhost
       - 127.0.0.1
+```
+
+### Available variables for default, hosts and groups
+```
+mariadb_default_users: []
+mariadb_host_users: []
+mariadb_group_users: []
+
+mariadb_default_databases: []
+mariadb_host_databases: []
+mariadb_group_databases: []
 ```
 
 ### Security
@@ -108,7 +119,7 @@ Ansible          | Debian Jessie    | Ubuntu 14.04    | Ubuntu 12.04
 ## Remove User
 To remove a user define ```state: absent```
 ```
-mariadb_users:
+mariadb_host_users:
    - name: 'test'
      host: localhost
      password: 'test'
