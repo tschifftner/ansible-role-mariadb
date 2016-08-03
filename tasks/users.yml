@@ -9,7 +9,7 @@
     append_privs: "{{ item.append_privs | default('no') }}"
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password | default(omit) }}'
-#  no_log: mariadb_debug == false
+  no_log: mariadb_debug == false
   when: mariadb_users|length and item.state is not defined or item.state != 'absent'
   with_items: '{{ mariadb_users }}'
 
@@ -24,7 +24,7 @@
     append_privs: "{{ item.append_privs | default('no') }}"
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password | default(omit) }}'
-#  no_log: mariadb_debug == false
+  no_log: mariadb_debug == false
   when: mariadb_users_create_ip_alias and mariadb_users|length and (item.state is not defined or item.state != 'absent') and (item.host is not defined or item.host == 'localhost')
   with_items: '{{ mariadb_users }}'
 
