@@ -49,14 +49,19 @@
 - include: secure-installation.yml
   tags: ['mariadb-secure-installation']
 
+- include: replication.yml
+  when: mariadb_replication_master != '' and mariadb_server_id == 1
+  tags: ['mariadb-replication']
+
+- include: replication.yml
+  when: mariadb_replication_master != '' and mariadb_server_id != 1
+  tags: ['mariadb-replication']
+
 - include: databases.yml
   tags: ['mariadb-databases']
 
 - include: users.yml
   tags: ['mariadb-users']
-
-#- include: replication.yml
-#  tags: ['mariadb-replication']
 
 - include: import.yml
   tags: ['mariadb-import']

@@ -107,9 +107,10 @@ mariadb_max_binlog_size: "100M"
 mariadb_expire_logs_days: "10"
 mariadb_replication_role: ''
 mariadb_replication_master: ''
-# Same keys as `mariadb_users` above.
-mariadb_replication_user: []
 
+# Will be created if it does not exist
+#mariadb_replication_username: ''
+#mariadb_replication_password: ''
 
 #
 # You should never have to overwrite these:

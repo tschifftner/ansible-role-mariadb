@@ -127,6 +127,32 @@ mariadb_host_users:
      state: 'absent'
 ```
 
+## Replication
+
+### Master/Master Replication
+
+_Server #1 (db1.example.org):_
+```
+mariadb_server_id: 1 #Must Be 1
+mariadb_replication_role: 'master'
+mariadb_replication_master: 'db2.example.org'
+mariadb_replication_username: 'replicationuser'
+mariadb_replication_password: 'strong-password'
+```
+
+_Server #2 (db2.example.org):_
+```
+mariadb_server_id: 2
+mariadb_replication_role: 'master'
+mariadb_replication_master: 'db1.example.org'
+mariadb_replication_username: 'replicationuser'
+mariadb_replication_password: 'strong-password'
+```
+
+### Master/Slave Replication
+
+Not possible
+
 ## License
 
 [MIT License](http://choosealicense.com/licenses/mit/)
