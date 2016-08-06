@@ -1,67 +1,33 @@
 ---
-- name: 'Include variables for debian'
-  include_vars: debian.yml
-  when: ansible_os_family == 'Debian'
-  tags: ['always']
 
-- name: 'Check if mariadb is already installed'
-  shell: mysql -V | grep -o MariaDB
-  register: mariadb_installed
-  ignore_errors: true
-  changed_when: false
-  tags: ['always']
-
-- name: 'Check root .my.cnf'
-  register: mycnf_file
-  stat:
-    path: '/root/.my.cnf'
-  tags: ['always']
-
-- name: 'Set mariadb facts'
-  set_fact:
-    mariadb_not_installed: "{{ 'true' if mariadb_installed.stdout == '' else 'false' }}"
-    _mariadb_login_user: "root"
-    _mariadb_login_password: ""
-    _mariadb_cmd_login: '-u root'
-  tags: ['always']
-
-# If root user has been removed, use new credentials
-- name: 'Set more maridb facts'
-  set_fact:
-    _mariadb_login_user: "{{ mariadb_admin_user }}"
-    _mariadb_login_password: "{{ mariadb_admin_password }}"
-    _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
-  when: mycnf_file.stat is defined and mycnf_file.stat.exists
-  tags: ['always']
-
-- name: 'Set cmd login fact'
-  set_fact:
-    _mariadb_cmd_login: '-u "{{ _mariadb_login_user }}"'
-  when: mariadb_not_installed == false and mariadb_admin_password is not defined or mariadb_admin_password == ''
+- include: vars.yml
   tags: ['always']
 
 - include: install.yml
   tags: ['mariadb-install']
 
 - include: configure.yml
-  tags: ['mariadb-configure']
+  tags: ['mariadb-configure', 'mariadb-update']
 
 - include: secure-installation.yml
   tags: ['mariadb-secure-installation']
 
 - include: replication.yml
-  when: mariadb_replication_master != '' and mariadb_server_id == 1
-  tags: ['mariadb-replication']
+  when: not _master_server and mariadb_replication_master != ''
+  tags: ['mariadb-replication', 'mariadb-update']
 
 - include: replication.yml
-  when: mariadb_replication_master != '' and mariadb_server_id != 1
-  tags: ['mariadb-replication']
+  when: _master_server and mariadb_replication_master != ''
+  tags: ['mariadb-replication', 'mariadb-update']
 
 - include: databases.yml
-  tags: ['mariadb-databases']
+  when: _master_server
+  tags: ['mariadb-databases', 'mariadb-update']
 
 - include: users.yml
-  tags: ['mariadb-users']
+  when: _master_server
+  tags: ['mariadb-users', 'mariadb-update']
 
 - include: import.yml
-  tags: ['mariadb-import']
+  when: _master_server
+  tags: ['mariadb-import', 'mariadb-update']

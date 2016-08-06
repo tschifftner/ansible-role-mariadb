@@ -1,5 +1,6 @@
 ---
 - name: Main configuration
+  register: _mariadb_config_changed
   template:
     src: my.cnf
     dest: "{{ mariadb_config_file }}"
@@ -7,7 +8,6 @@
     group: root
     mode: 0644
     force: "{{ mariadb_overwrite_global_mycnf }}"
-  notify: restart mysql
 
 - name: Ensure additional configuration folder exists
   file:
@@ -28,7 +28,7 @@
     force: "{{ item.force | default(false) }}"
   with_items: '{{ mariadb_config_include_files }}'
   when: mariadb_config_include_files|length
-  notify: restart mysql
+  register: _mariadb_additional_config_changed
 
 - name: Enable slow query log
   file:
@@ -45,3 +45,11 @@
     state: started
     enabled: "{{ mariadb_enabled_on_startup | default(yes) }}"
     sleep: 8
+
+- name: Restart mariadb on config changes right away
+  service:
+    name: mysql
+    state: restarted
+  when: >
+    _mariadb_config_changed|changed
+    or _mariadb_additional_config_changed|changed

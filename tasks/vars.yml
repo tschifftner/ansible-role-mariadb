@@ -1,0 +1,37 @@
+---
+
+- name: 'Include variables for debian'
+  include_vars: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: 'Check if mariadb is already installed'
+  shell: mysql -V | grep -o MariaDB
+  register: mariadb_installed
+  ignore_errors: true
+  changed_when: false
+
+- name: 'Check root .my.cnf'
+  register: mycnf_file
+  stat:
+    path: '/root/.my.cnf'
+
+- name: 'Set mariadb facts'
+  set_fact:
+    mariadb_not_installed: "{{ 'true' if mariadb_installed.stdout == '' else 'false' }}"
+    _mariadb_login_user: "root"
+    _mariadb_login_password: ""
+    _mariadb_cmd_login: '-u root'
+    _master_server: "{{ mariadb_replication_master == '' or (mariadb_replication_master != '' and mariadb_server_id == 1) }}"
+
+# If root user has been removed, use new credentials
+- name: 'Set more maridb facts'
+  set_fact:
+    _mariadb_login_user: "{{ mariadb_admin_user }}"
+    _mariadb_login_password: "{{ mariadb_admin_password }}"
+    _mariadb_cmd_login: '-u "{{ mariadb_admin_user }}" -p"{{ mariadb_admin_password }}"'
+  when: mycnf_file.stat is defined and mycnf_file.stat.exists
+
+- name: 'Set cmd login fact'
+  set_fact:
+    _mariadb_cmd_login: '-u "{{ _mariadb_login_user }}"'
+  when: mariadb_not_installed == false and mariadb_admin_password is not defined or mariadb_admin_password == ''

@@ -28,6 +28,16 @@
   ignore_errors: true
   register: slave
 
+- name: Start replication
+  mysql_replication:
+    mode: stopslave
+  when: >
+    slave|failed
+    or (slave.Slave_IO_Running == 'No')
+    or (slave.Slave_SQL_Running == 'No')
+
+- debug: msg="{{ slave }}"
+
 - name: Check replication status (master)
   mysql_replication:
     mode: getmaster
@@ -35,6 +45,10 @@
   register: master
   when: >
     slave|failed
+    or (slave.Slave_IO_Running == 'No')
+    or (slave.Slave_SQL_Running == 'No')
+
+- debug: msg="{{ master }}"
 
 - name: Configure slave
   mysql_replication:
@@ -47,6 +61,8 @@
   ignore_errors: true
   when: >
     slave|failed
+    or (slave.Slave_IO_Running == 'No')
+    or (slave.Slave_SQL_Running == 'No')
 
 - name: Start replication
   mysql_replication:
