@@ -53,3 +53,4 @@
   when: >
     _mariadb_config_changed|changed
     or _mariadb_additional_config_changed|changed
+  tags: ['skip_ansible_lint']

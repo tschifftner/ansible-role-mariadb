@@ -33,3 +33,4 @@
   with_nested:
       - '{{ mariadb_import_files }}'
       - '{{ _mariadb_databases.results }}'
+  tags: ['skip_ansible_lint']
