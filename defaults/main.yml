@@ -79,6 +79,8 @@ mariadb_myisam_sort_buffer_size: "64M"
 mariadb_thread_cache_size: "8"
 mariadb_query_cache_size: "16M"
 mariadb_max_connections: 151
+mariadb_tmp_table_size: '64M'
+mariadb_max_heap_table_size: '64M'
 
 # Other settings.
 mariadb_wait_timeout: 28800
