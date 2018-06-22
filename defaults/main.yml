@@ -1,4 +1,8 @@
 ---
+mariadb_version: '10.2'
+
+mariadb_apt_keyid: ''
+
 mariadb_admin_home: '/root'
 mariadb_admin_user: 'admin'
 
@@ -76,14 +80,23 @@ mariadb_sort_buffer_size: "1M"
 mariadb_read_buffer_size: "1M"
 mariadb_read_rnd_buffer_size: "4M"
 mariadb_myisam_sort_buffer_size: "64M"
+mariadb_table_cache: 2000
 mariadb_thread_cache_size: "8"
 mariadb_query_cache_size: "16M"
 mariadb_max_connections: 151
 mariadb_tmp_table_size: '64M'
 mariadb_max_heap_table_size: '64M'
+mariadb_join_buffer_size: '3M'
 
 # Other settings.
-mariadb_wait_timeout: 28800
+mariadb_wait_timeout: 1800
+mariadb_net_read_timeout: 120
+mariadb_skip_name_resolve: true
+mariadb_back_log: 100
+mariadb_max_connect_errors: 10000
+mariadb_open_files_limit: 20000
+mariadb_interactive_timeout: 3600
+mariadb_connect_timeout: 120
 
 # InnoDB settings.
 # Set .._buffer_pool_size up to 80% of RAM but beware of setting too high.
@@ -92,8 +105,9 @@ mariadb_innodb_buffer_pool_size: "256M"
 # Set .._log_file_size to 25% of buffer pool size.
 mariadb_innodb_log_file_size: "64M"
 mariadb_innodb_log_buffer_size: "8M"
-mariadb_innodb_flush_log_at_trx_commit: "1"
-mariadb_innodb_lock_wait_timeout: 50
+mariadb_innodb_flush_log_at_trx_commit: "2"
+mariadb_innodb_lock_wait_timeout: 600
+mariadb_innodb_additional_mem_pool_size: "8M"
 
 # mysqldump settings.
 mariadb_mysqldump_max_allowed_packet: "64M"
@@ -113,6 +127,8 @@ mariadb_replication_master: ''
 # Will be created if it does not exist
 #mariadb_replication_username: ''
 #mariadb_replication_password: ''
+
+mariadb_credentials_file: []
 
 #
 # You should never have to overwrite these:

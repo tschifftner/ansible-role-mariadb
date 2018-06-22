@@ -1,0 +1,63 @@
+---
+
+# For servers with 4GB ram
+
+# Memory settings (default values optimized ~512MB RAM).
+mariadb_key_buffer_size: "512M"
+mariadb_max_allowed_packet: "128M"
+mariadb_table_open_cache: "256"
+mariadb_sort_buffer_size: "1M"
+mariadb_read_buffer_size: "1M"
+mariadb_read_rnd_buffer_size: "8M"
+mariadb_myisam_sort_buffer_size: "64M"
+mariadb_thread_cache_size: "8"
+mariadb_query_cache_size: "128M"
+mariadb_max_connections: 151
+mariadb_tmp_table_size: '64M'
+mariadb_max_heap_table_size: '64M'
+mariadb_join_buffer_size: '3M'
+
+mariadb_innodb_buffer_pool_size: "1G"
+# Set .._log_file_size to 25% of buffer pool size.
+mariadb_innodb_log_file_size: "100M" # max 25% of innodb_buffer_pool_size
+mariadb_innodb_log_buffer_size: "8M"
+mariadb_innodb_flush_log_at_trx_commit: 2 # write once per second
+
+# mysqldump settings.
+mariadb_mysqldump_max_allowed_packet: "64M"
+
+mariadb_key_buffer_size: 1G
+mariadb_innodb_additional_mem_pool_size: 20M
+
+
+#innodb settings
+innodb_log_file_size=100M
+innodb_additional_mem_pool_size=20M
+innodb_flush_log_at_trx_commit=2
+innodb_lock_wait_timeout=1800
+innodb_buffer_pool_size=20G
+
+#other vars
+net_read_timeout=120
+skip-locking
+skip-name-resolve
+table_cache=2048
+thread_cache_size=16
+back_log=100
+max_connect_errors=10000
+open-files-limit=20000
+interactive_timeout=3600
+wait_timeout=1800
+max_connections=200
+key_buffer_size=1G
+connect_timeout=120
+
+#skip-name-resolve
+max_allowed_packet=16M
+tmp_table_size=64M
+max_heap_table_size=64M
+query_cache_size=256M
+sort_buffer_size=1M
+read_buffer_size=1M
+read_rnd_buffer_size=8M
+join_buffer_size=3M

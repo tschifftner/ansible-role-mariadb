@@ -1,10 +1,12 @@
 ---
+
 - name: Purge all mysql packages
   apt:
     pkg: '{{ item }}'
     state: absent
     purge: true
   when: mariadb_not_installed
+  ignore_errors: true
   with_items:
     - 'mysql*'
     - 'mysql'
@@ -21,36 +23,33 @@
     dest: /etc/apt/preferences.d/mariadb.pref
   when: mariadb_pin_repository
 
+- name: Install mariadb apt dependencies
+  apt:
+    pkg: '{{ item }}'
+    state: present
+#    allow_unauthenticated: yes
+  with_items: '{{mariadb_apt_dependencies}}'
+
+- name: Install MySQL-python pip package
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items: '{{ mariadb_pip_dependencies }}'
+
 - name: Install mariadb apt repositories
   apt_repository:
     repo: "{{ item }}"
     state: present
     update_cache: yes
+    filename: mariadb
   register: mariadb_install_packages
   with_items: '{{mariadb_apt_repositories}}'
-
-- name: Install mariadb apt dependencies
-  apt:
-    pkg: '{{ item }}'
-    state: present
-    force: yes
-  with_items: '{{mariadb_apt_dependencies}}'
-
-# Run when _NOT_ Ubuntu 12
-- name: Install mariadb apt dependencies
-  apt:
-    pkg: '{{ item }}'
-    state: build-dep
-    force: yes
-  with_items: '{{mariadb_apt_packages}}'
-  changed_when: false
-  when: (ansible_distribution == 'Ubuntu' and ansible_distribution_version|int < 14) == false
 
 - name: Install mariadb server apt packages
   apt:
     pkg: '{{ item }}'
     state: present
-    force: yes
+#    allow_unauthenticated: yes
   with_items: '{{mariadb_apt_packages}}'
 
 - name: Install mariadb tools
