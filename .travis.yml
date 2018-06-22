@@ -49,11 +49,11 @@ script:
   - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --become"
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-    ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+    ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
@@ -90,7 +90,7 @@ script:
     || (echo 'MariaDb not running' && exit 1)
 
 after_failure:
-  - ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/$SITE --connection=local --become
   - "sudo ls -lah /var/log"
   - "sudo cat /var/log/mysql/error.log"
   - sudo service mysql status
