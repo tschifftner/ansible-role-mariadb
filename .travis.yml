@@ -10,34 +10,10 @@ env:
 #  - distro: ubuntu1204
 
   - distro: debian9
-    playbook: test-admin-with-password.yml
-    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-    MYSQL_VERSION: 10.3
-
-  - distro: debian9
-    playbook: test-admin-without-password.yml
-    MYSQL_ROOT_LOGIN: "'-u admin'"
-    MYSQL_VERSION: 10.3
-
-  - distro: debian9
-    playbook: test-root-with-password.yml
-    MYSQL_ROOT_LOGIN: "'-u root -ptravis'"
-    MYSQL_VERSION: 10.3
-
-  - distro: debian9
-    playbook: test-root-without-password.yml
-    MYSQL_ROOT_LOGIN: "'-u root'"
-    MYSQL_VERSION: 10.3
-
-  - distro: debian9
-    playbook: test-mariadb10-2.yml
-    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-    MYSQL_VERSION: 10.2
-
-  - distro: debian9
     playbook: test-upgrade.yml
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
     MYSQL_VERSION: 10.3
+    REUSE: true
 
 #  - distro: debian9
 #    playbook: test-mariadb10-1.yml
@@ -66,6 +42,34 @@ env:
     MYSQL_VERSION: 10.3
 
 
+
+  - distro: debian9
+    playbook: test-admin-with-password.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.3
+
+  - distro: debian9
+    playbook: test-admin-without-password.yml
+    MYSQL_ROOT_LOGIN: "'-u admin'"
+    MYSQL_VERSION: 10.3
+
+  - distro: debian9
+    playbook: test-root-with-password.yml
+    MYSQL_ROOT_LOGIN: "'-u root -ptravis'"
+    MYSQL_VERSION: 10.3
+
+  - distro: debian9
+    playbook: test-root-without-password.yml
+    MYSQL_ROOT_LOGIN: "'-u root'"
+    MYSQL_VERSION: 10.3
+
+  - distro: debian9
+    playbook: test-mariadb10-2.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.2
+
+
+
 #  - distro: debian8
 #  - distro: ubuntu1804
 #  - distro: ubuntu1604
@@ -74,6 +78,7 @@ script:
   # Configure test script so we can run extra tests after playbook is run.
   - export container_id=$(date +%s)
   - export cleanup=false
+  - export reuse=${REUSE:-false}
   - export DOCKER="docker exec --tty ${container_id} env TERM=xterm"
 
   # Download test shim.
@@ -126,8 +131,6 @@ after_failure:
   - ${DOCKER} ls -lah /var/log
   - ${DOCKER} cat /var/log/mysql/error.log
   - ${DOCKER} systemctl --no-pager status mysql
-  - "${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'"
-  - echo ${MYSQL_ROOT_LOGIN}
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
   - ${DOCKER} mysql -u supertravis -ptravis -e 'show databases;'
