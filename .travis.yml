@@ -12,18 +12,53 @@ env:
   - distro: debian9
     playbook: test-admin-with-password.yml
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.3
 
   - distro: debian9
     playbook: test-admin-without-password.yml
     MYSQL_ROOT_LOGIN: "'-u admin'"
+    MYSQL_VERSION: 10.3
 
   - distro: debian9
     playbook: test-root-with-password.yml
     MYSQL_ROOT_LOGIN: "'-u root -ptravis'"
+    MYSQL_VERSION: 10.3
 
   - distro: debian9
     playbook: test-root-without-password.yml
     MYSQL_ROOT_LOGIN: "'-u root'"
+    MYSQL_VERSION: 10.3
+
+  - distro: debian9
+    playbook: test-mariadb10-2.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.2
+
+  - distro: debian9
+    playbook: test-mariadb10-1.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.1
+
+  - distro: debian9
+    playbook: test-mariadb10-0.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.0
+
+
+  - distro: debian8
+    playbook: test-mariadb10-3.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.3
+
+  - distro: ubuntu1804
+    playbook: test-mariadb10-3.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.3
+
+  - distro: ubuntu1804
+    playbook: test-mariadb10-3.yml
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+    MYSQL_VERSION: 10.3
 
 
 #  - distro: debian8
@@ -45,6 +80,9 @@ script:
 
   # Make sure mariadb service is running
   - ${DOCKER} systemctl --no-pager status mysql | grep "running"
+
+  # Make sure correct version is installed
+  - ${DOCKER} mysql --version | grep '${MYSQL_VERSION}'
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
