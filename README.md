@@ -106,12 +106,6 @@ None.
       roles:
         - { role: tschifftner.mariadb }
 
-## Supported OS
-
-Ansible          | Debian Jessie    | Ubuntu 14.04    | Ubuntu 12.04
-:--------------: | :--------------: | :-------------: | :-------------: 
-2.1              | Yes              | Yes             | Yes
-
 ## Root password lost
 
 [If you cannot login anymore you can reset your credentials.](https://falseisnotnull.wordpress.com/2012/10/31/did-you-lose-your-mariadb-root-password-gnulinux/)
@@ -152,6 +146,17 @@ mariadb_replication_password: 'strong-password'
 ### Master/Slave Replication
 
 Not possible
+
+## Supported OS
+
+ - Debian 9 (Stretch)
+ - Debian 8 (Jessie)
+ - Ubuntu 18.04 (Bionic Beaver)
+ - Ubuntu 16.04 (Xenial Xerus)
+ 
+## Required ansible version
+
+Ansible 2.5+
 
 ## License
 
