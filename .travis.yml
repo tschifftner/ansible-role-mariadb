@@ -1,103 +1,88 @@
 ---
-sudo: required
-dist: trusty
-
-language: python
-python: "2.7"
+services: docker
 
 env:
-  # admin with password
-  - SITE=test-admin-with-password.yml MYSQL_ROOT_LOGIN='-u admin -ptravis' ANSIBLE_VERSION=latest
-  - SITE=test-admin-with-password.yml MYSQL_ROOT_LOGIN='-u admin -ptravis' ANSIBLE_VERSION=2.1.0.0
+#  - distro: centos7
+#  - distro: centos6
+#  - distro: fedora27
+#  - distro: ubuntu1604
+#  - distro: ubuntu1404
+#  - distro: ubuntu1204
 
-  # admin without password (not supported by ansible yet, therefore only one test)
-  - SITE=test-admin-without-password.yml MYSQL_ROOT_LOGIN='-u admin' ANSIBLE_VERSION=latest
+  - distro: debian9
+    playbook: test-admin-with-password.yml
+    MYSQL_ROOT_LOGIN: '-u admin -ptravis'
 
-  # root with password
-  - SITE=test-root-with-password.yml MYSQL_ROOT_LOGIN='-u root -ptravis' ANSIBLE_VERSION=latest
-  - SITE=test-root-with-password.yml MYSQL_ROOT_LOGIN='-u root -ptravis' ANSIBLE_VERSION=2.1.0.0
+  - distro: debian9
+    playbook: test-admin-without-password.yml
+    MYSQL_ROOT_LOGIN: '-u admin'
 
-  # root without password
-  - SITE=test-root-without-password.yml MYSQL_ROOT_LOGIN='-u root' ANSIBLE_VERSION=latest
-  - SITE=test-root-without-password.yml MYSQL_ROOT_LOGIN='-u root' ANSIBLE_VERSION=2.1.0.0
+  - distro: debian9
+    playbook: test-root-with-password.yml
+    MYSQL_ROOT_LOGIN: '-u root -ptravis'
 
-matrix:
-  allow_failures:
-    - env: SITE=test-admin-without-password.yml MYSQL_ROOT_LOGIN='-u admin' ANSIBLE_VERSION=latest
+  - distro: debian9
+    playbook: test-root-without-password.yml
+    MYSQL_ROOT_LOGIN: '-u root'
 
-branches:
-  only:
-    - master
-    - dev
 
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y curl
-
-install:
-  # Install Ansible.
-  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install --no-binary ansible ansible; else pip install --no-binary ansible ansible==$ANSIBLE_VERSION; fi
-
-  # Add ansible.cfg to pick up roles path.
-  - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-
-  # Install ansible-lint
-  - pip install ansible-lint
+#  - distro: debian8
+#  - distro: ubuntu1804
+#  - distro: ubuntu1604
 
 script:
-  # Check the role/playbook's syntax.
-  - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+  - export DOCKER="docker exec --tty ${container_id} env TERM=xterm"
 
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+  # Download test shim.
+  - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/tschifftner/4078cf2a8429d967d5e100649ff2caa9/raw/
+  - chmod +x ${PWD}/tests/test.sh
 
-  # Run the role/playbook again, checking to make sure it's idempotent.
-  - >
-    ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
+  # Run tests.
+  - ${PWD}/tests/test.sh
 
-  # ansible-lint checks for best practice
-  - ansible-lint tests/$SITE
+  # Make sure mariadb service is running
+  - ${DOCKER} systemctl --no-pager status mysql | grep "running"
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
-    mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
+    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check to make sure we can connect to MySQL via TCP.
   - >
-    mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
+    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
     | grep -q 'performance_schema'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check travis user and database
   - >
-    mysql -u supertravis -ptravis -e 'show databases;'
+    ${DOCKER} mysql -u supertravis -ptravis -e 'show databases;'
     | grep -q 'travis_testdb'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
   # Check normal travis user and database
   - >
-    mysql -u normaltravis -ptravis -e 'show databases;'
+    ${DOCKER} mysql -u normaltravis -ptravis -e 'show databases;'
     | grep -q 'travis_testdb'
     && (echo 'MariaDb running normally' && exit 0)
     || (echo 'MariaDb not running' && exit 1)
 
+
 after_failure:
-  - ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
-  - "sudo ls -lah /var/log"
-  - "sudo cat /var/log/mysql/error.log"
-  - sudo service mysql status
-  - mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
-  - mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
-  - mysql -u supertravis -ptravis -e 'show databases;'
-  - mysql -u normaltravis -ptravis -e 'show databases;'
+  - ${DOCKER} ls -lah /var/log
+  - ${DOCKER} cat /var/log/mysql/error.log
+  - ${DOCKER} service mysql status
+  - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
+  - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
+  - ${DOCKER} mysql -u supertravis -ptravis -e 'show databases;'
+  - ${DOCKER} mysql -u normaltravis -ptravis -e 'show databases;'
 
 notifications:
   slack: ambimax:2MlPTX9bY9aPxCPhJGxHKIT6
