@@ -11,19 +11,19 @@ env:
 
   - distro: debian9
     playbook: test-admin-with-password.yml
-    MYSQL_ROOT_LOGIN: '-u admin -ptravis'
+    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
 
   - distro: debian9
     playbook: test-admin-without-password.yml
-    MYSQL_ROOT_LOGIN: '-u admin'
+    MYSQL_ROOT_LOGIN: "'-u admin'"
 
   - distro: debian9
     playbook: test-root-with-password.yml
-    MYSQL_ROOT_LOGIN: '-u root -ptravis'
+    MYSQL_ROOT_LOGIN: "'-u root -ptravis'"
 
   - distro: debian9
     playbook: test-root-without-password.yml
-    MYSQL_ROOT_LOGIN: '-u root'
+    MYSQL_ROOT_LOGIN: "'-u root'"
 
 
 #  - distro: debian8
