@@ -44,7 +44,7 @@
 - name: Copy .my.cnf file with credentials for administrative user
   template:
     src: "user-my.cnf"
-    dest: "/root/.my.cnf"
+    dest: "{{ mariadb_admin_home }}/.my.cnf"
     owner: root
     group: root
     mode: '0600'

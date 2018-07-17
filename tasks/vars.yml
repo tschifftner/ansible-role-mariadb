@@ -21,7 +21,7 @@
 - name: 'Check root .my.cnf'
   register: mycnf_file
   stat:
-    path: '/root/.my.cnf'
+    path: '{{ mariadb_admin_home }}/.my.cnf'
 
 - name: 'Set mariadb facts'
   set_fact:
