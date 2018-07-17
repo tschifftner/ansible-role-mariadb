@@ -9,23 +9,6 @@ env:
 #  - distro: ubuntu1404
 #  - distro: ubuntu1204
 
-  - distro: debian9
-    playbook: test-upgrade.yml
-    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-    MYSQL_VERSION: 10.3
-    REUSE: true
-
-#  - distro: debian9
-#    playbook: test-mariadb10-1.yml
-#    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-#    MYSQL_VERSION: 10.1
-#
-#  - distro: debian9
-#    playbook: test-mariadb10-0.yml
-#    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-#    MYSQL_VERSION: 10.0
-
-
   - distro: debian8
     playbook: test-mariadb10-3.yml
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
@@ -69,11 +52,6 @@ env:
     MYSQL_VERSION: 10.2
 
 
-
-#  - distro: debian8
-#  - distro: ubuntu1804
-#  - distro: ubuntu1604
-
 script:
   # Configure test script so we can run extra tests after playbook is run.
   - export container_id=$(date +%s)
@@ -85,12 +63,12 @@ script:
   - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/tschifftner/4078cf2a8429d967d5e100649ff2caa9/raw/
   - chmod +x ${PWD}/tests/test.sh
 
-  # Prepare for upgrade test
-  - |
-    if [ "${playbook}" == "test-upgrade.yml" ]; then
-      playbook=test-mariadb10-2.yml ${PWD}/tests/test.sh
-      ${DOCKER} mysql --version | grep '10.2'
-    fi
+  # Prepare for upgrade test (No upgrade supported yet!)
+#  - |
+#    if [ "${playbook}" == "test-upgrade.yml" ]; then
+#      playbook=test-mariadb10-2.yml ${PWD}/tests/test.sh
+#      ${DOCKER} mysql --version | grep '10.2'
+#    fi
 
   # Run tests.
   - ${PWD}/tests/test.sh

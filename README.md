@@ -12,6 +12,10 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
+```
+mariadb_version: '10.3'
+```
+
 ### Create database users
 
 _Passwords are required!_
@@ -154,9 +158,18 @@ Not possible
  - Ubuntu 18.04 (Bionic Beaver)
  - Ubuntu 16.04 (Xenial Xerus)
  
+## Supported MariaDB versions
+
+ - 10.2
+ - 10.3
+ 
 ## Required ansible version
 
 Ansible 2.5+
+
+## Upgrade MariaDB 10.2 to 10.3
+
+https://mariadb.com/kb/en/library/upgrading-from-mariadb-102-to-mariadb-103/
 
 ## License
 
