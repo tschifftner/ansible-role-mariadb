@@ -36,7 +36,7 @@ env:
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
     MYSQL_VERSION: 10.3
 
-  - distro: ubuntu1804
+  - distro: ubuntu1604
     playbook: test-mariadb10-3.yml
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
     MYSQL_VERSION: 10.3
@@ -89,6 +89,7 @@ script:
   - |
     if [ "${playbook}" == "test-upgrade.yml" ]; then
       playbook=test-mariadb10-2.yml ${PWD}/tests/test.sh
+      ${DOCKER} mysql --version | grep '10.2'
     fi
 
   # Run tests.
@@ -131,6 +132,7 @@ after_failure:
   - ${DOCKER} ls -lah /var/log
   - ${DOCKER} cat /var/log/mysql/error.log
   - ${DOCKER} systemctl --no-pager status mysql
+  - ${DOCKER} mysql --version
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
   - ${DOCKER} mysql -u supertravis -ptravis -e 'show databases;'
