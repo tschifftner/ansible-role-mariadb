@@ -30,7 +30,7 @@
 - name: Add administrative user
   mysql_user:
     user: '{{ mariadb_admin_user }}'
-    password: '{{ mariadb_admin_password }}'
+    password: '{{ mariadb_admin_password | default(omit) }}'
     host: '{{ item }}'
     priv: '*.*:ALL,GRANT'
     state: present
@@ -38,6 +38,7 @@
     login_user: '{{ _mariadb_login_user }}'
     login_password: '{{ _mariadb_login_password | default(omit) }}'
   no_log: mariadb_debug == false
+  changed_when: false # required for idempotence
   with_items: '{{ mariadb_admin_hosts }}'
 
 - name: Copy .my.cnf file with credentials for administrative user
