@@ -48,17 +48,15 @@ script:
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
-    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
-    | grep -q 'performance_schema'
-    && (echo 'MariaDb running normally' && exit 0)
-    || (echo 'MariaDb not running' && exit 1)
+    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;' | grep -q 'performance_schema'
+    && (echo 'Connecting mariadb via unix socket.' && exit 0)
+    || (echo 'Cannot connect mariadb via unix socket.' && exit 1)
 
   # Check to make sure we can connect to MySQL via TCP.
   - >
-    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
-    | grep -q 'performance_schema'
-    && (echo 'MariaDb running normally' && exit 0)
-    || (echo 'MariaDb not running' && exit 1)
+    ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;' | grep -q 'performance_schema'
+    && (echo 'Connecting mariadb via TCP.' && exit 0)
+    || (echo 'Cannot connect mariadb via TCP.' && exit 1)
 
   # Check travis user and database
   - >
@@ -78,7 +76,7 @@ script:
 after_failure:
   - ${DOCKER} ls -lah /var/log
   - ${DOCKER} cat /var/log/mysql/error.log
-  - ${DOCKER} service mysql status
+  - ${DOCKER} systemctl --no-pager status mysql
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -e 'show databases;'
   - ${DOCKER} mysql ${MYSQL_ROOT_LOGIN} -h 127.0.0.1 -e 'show databases;'
   - ${DOCKER} mysql -u supertravis -ptravis -e 'show databases;'

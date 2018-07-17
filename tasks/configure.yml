@@ -54,3 +54,9 @@
     _mariadb_config_changed|changed
     or _mariadb_additional_config_changed|changed
   tags: ['skip_ansible_lint']
+
+- name: 'Wait for mariadb to be started'
+  wait_for:
+    port: '{{ mariadb_port }}'
+    delay: 3
+    timeout: 300
