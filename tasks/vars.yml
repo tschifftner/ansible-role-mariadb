@@ -8,6 +8,10 @@
   include_vars: debian-stretch.yml
   when: (ansible_distribution == 'Debian' and ansible_distribution_version|int >= 9)
 
+- name: 'Include variables for ubuntu'
+  include_vars: ubuntu.yml
+  when: (ansible_distribution == 'Ubuntu')
+
 - name: 'Check if mariadb is already installed'
   shell: mysql -V | grep -o MariaDB
   register: mariadb_installed
