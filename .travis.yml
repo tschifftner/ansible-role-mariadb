@@ -82,7 +82,7 @@ script:
   - ${DOCKER} systemctl --no-pager status mysql | grep "running"
 
   # Make sure correct version is installed
-  - ${DOCKER} mysql --version | grep '${MYSQL_VERSION}'
+  - ${DOCKER} mysql --version | grep "${MYSQL_VERSION}"
 
   # Check to make sure we can connect to MySQL via Unix socket.
   - >
