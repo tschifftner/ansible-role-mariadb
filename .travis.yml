@@ -34,7 +34,7 @@ script:
   # Configure test script so we can run extra tests after playbook is run.
   - export container_id=$(date +%s)
   - export cleanup=false
-  - export DOCKER="docker exec --tty ${container_id} env TERM=xterm MYSQL_ROOT_LOGIN=${MYSQL_ROOT_LOGIN}"
+  - export DOCKER="docker exec --tty ${container_id} env TERM=xterm"
 
   # Download test shim.
   - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/tschifftner/4078cf2a8429d967d5e100649ff2caa9/raw/
