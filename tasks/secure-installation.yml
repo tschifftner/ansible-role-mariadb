@@ -16,6 +16,7 @@
   shell: mysql {{ _mariadb_cmd_login }} -NBe 'DELETE FROM mysql.user WHERE host = "{{ item }}"'
   when: mariadb_install_packages | bool and item not in mariadb_allowed_hosts
   with_items: '{{ mysql_hosts.stdout_lines }}'
+  tags: ['skip_ansible_lint']
 
 - name: Remove anonymous user
   mysql_user:
