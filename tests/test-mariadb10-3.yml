@@ -3,8 +3,9 @@
   remote_user: root
 
   vars:
-    mariadb_admin_user: 'root'
-    mariadb_admin_password: ''
+    mariadb_version: 10.3
+    mariadb_admin_user: 'admin'
+    mariadb_admin_password: 'travis'
     mariadb_debug: true
 
     mariadb_users:

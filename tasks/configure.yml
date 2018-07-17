@@ -44,13 +44,18 @@
     name: mysql
     state: started
     enabled: "{{ mariadb_enabled_on_startup | default(yes) }}"
-    sleep: 8
 
 - name: Restart mariadb on config changes right away
   service:
     name: mysql
     state: restarted
   when: >
-    _mariadb_config_changed|changed
-    or _mariadb_additional_config_changed|changed
+    _mariadb_config_changed is changed
+    or _mariadb_additional_config_changed is changed
   tags: ['skip_ansible_lint']
+
+- name: 'Wait for mariadb to be started'
+  wait_for:
+    port: '{{ mariadb_port }}'
+    delay: 3
+    timeout: 300

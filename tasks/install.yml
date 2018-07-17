@@ -27,7 +27,9 @@
   apt:
     pkg: '{{ item }}'
     state: present
-#    allow_unauthenticated: yes
+    update_cache: yes
+    cache_valid_time: 86400
+    allow_unauthenticated: yes
   with_items: '{{mariadb_apt_dependencies}}'
 
 - name: Install MySQL-python pip package
@@ -49,7 +51,7 @@
   apt:
     pkg: '{{ item }}'
     state: present
-#    allow_unauthenticated: yes
+    allow_unauthenticated: yes
   with_items: '{{mariadb_apt_packages}}'
 
 - name: Install mariadb tools
