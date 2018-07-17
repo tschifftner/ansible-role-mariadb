@@ -35,14 +35,19 @@ env:
     MYSQL_VERSION: 10.2
 
   - distro: debian9
-    playbook: test-mariadb10-1.yml
+    playbook: test-upgrade.yml
     MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-    MYSQL_VERSION: 10.1
+    MYSQL_VERSION: 10.3
 
-  - distro: debian9
-    playbook: test-mariadb10-0.yml
-    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
-    MYSQL_VERSION: 10.0
+#  - distro: debian9
+#    playbook: test-mariadb10-1.yml
+#    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+#    MYSQL_VERSION: 10.1
+#
+#  - distro: debian9
+#    playbook: test-mariadb10-0.yml
+#    MYSQL_ROOT_LOGIN: "'-u admin -ptravis'"
+#    MYSQL_VERSION: 10.0
 
 
   - distro: debian8
@@ -74,6 +79,12 @@ script:
   # Download test shim.
   - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/tschifftner/4078cf2a8429d967d5e100649ff2caa9/raw/
   - chmod +x ${PWD}/tests/test.sh
+
+  # Prepare for upgrade test
+  - |
+    if [ "${playbook}" == "test-upgrade.yml" ]; then
+      playbook=test-mariadb10-2.yml ${PWD}/tests/test.sh
+    fi
 
   # Run tests.
   - ${PWD}/tests/test.sh
